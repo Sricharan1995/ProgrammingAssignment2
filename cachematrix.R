@@ -1,15 +1,65 @@
-## Put comments here that give an overall description of what your
-## functions do
+##list containing a function toset the value of the vector,get the value of the vector
+##set the value of the mean,get the value of the vector
 
-## Write a short comment describing this function
+get the value of the mean
+makeVector <- function(x = numeric()) {
+        m <- NULL
+        set <- function(y) {
+                x <<- y
+                m <<- NULL
+        }
+        get <- function() x
+        setmean <- function(mean) m <<- mean
+        getmean <- function() m
+        list(set = set, get = get,
+             setmean = setmean,
+             getmean = getmean)
+}
+
+cachemean <- function(x, ...) {
+        m <- x$getmean()
+        if(!is.null(m)) {
+                message("getting cached data")
+                return(m)
+        }
+        data <- x$get()
+        m <- mean(data, ...)
+        x$setmean(m)
+        m
+}
+## Caching the Inverse of a Matrix:
 
 makeCacheMatrix <- function(x = matrix()) {
-
+        inv <- NULL
+        set <- function(y) {
+                x <<- y
+                inv <<- NULL
+        }
+        get <- function() x
+        setInverse <- function(inverse) inv <<- inverse
+        getInverse <- function() inv
+        list(set = set,
+             get = get,
+             setInverse = setInverse,
+             getInverse = getInverse)
 }
 
 
-## Write a short comment describing this function
+## This function computes the inverse of the special "matrix" created by 
+## makeCacheMatrix above. If the inverse has already been calculated then it should retrieve the inverse from the cache.
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
+        inv <- x$getInverse()
+        if (!is.null(inv)) {
+                message("getting cached data from it")
+                return(inv)
+        }
+        mat <- x$get()
+        inv <- solve(mat, ...)
+        x$setInverse(inv)
+        inv
 }
+        ## Return a matrix that is the inverse of 'x'
+
+
